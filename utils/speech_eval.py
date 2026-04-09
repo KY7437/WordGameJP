@@ -1,5 +1,14 @@
 import speech_recognition as sr
 import jaconv
+from difflib import SequenceMatcher
+
+
+SIMILARITY_THRESHOLD = 0.8  # ⭐ 80% 기준
+
+
+def similarity(a: str, b: str) -> float:
+    return SequenceMatcher(None, a, b).ratio()
+
 
 def recognize_and_check(target_word: str) -> bool:
     r = sr.Recognizer()
@@ -11,8 +20,8 @@ def recognize_and_check(target_word: str) -> bool:
         except:
             return False
 
-    # 히라가나로 통일해서 비교
     spoken = jaconv.kata2hira(result)
     target = jaconv.kata2hira(target_word)
 
-    return spoken == target
+    score = similarity(spoken, target)
+    return score >= SIMILARITY_THRESHOLD
