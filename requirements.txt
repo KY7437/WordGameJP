@@ -1,4 +1,4 @@
-flask
-openai-whisper
-torch
-jamotools
+streamlit
+speechrecognition
+pyaudio
+jaconv
